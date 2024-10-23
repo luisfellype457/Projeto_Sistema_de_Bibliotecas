@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include<stdlib.h>
+#include <stdlib.h>
 #define Numero_Maximo_de_Livros 100
 #define Comprimento_maximo 100
 #define Tamanho_Maximo_da_Categoria 50
