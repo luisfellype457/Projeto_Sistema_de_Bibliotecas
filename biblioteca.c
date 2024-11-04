@@ -5,19 +5,45 @@
 
                                                                    //FUNÇÕES PARA LIVRO (ALEC)
 
+void salvar_livros(const livro livros[], int quantidade) {
+    FILE *arquivo = fopen("livros_cadastrados.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para salvar os livros.\n");
+        return;
+    }
+
+    for (int i = 0; i < quantidade; i++) {
+        fprintf(arquivo, "Livro %d:\n", i + 1);
+        fprintf(arquivo, "  Nome: %s\n", livros[i].nome);
+        fprintf(arquivo, "  Autor: %s\n", livros[i].autor);
+        fprintf(arquivo, "  Gênero: %d\n", livros[i].genero);
+        fprintf(arquivo, "  Volume: %d\n", livros[i].volume);
+        fprintf(arquivo, "  Quantidade: %d\n", livros[i].qtd);
+        fprintf(arquivo, "  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
+    }
+
+    fclose(arquivo);
+    printf("Lista de livros salva em 'livros_cadastrados.txt'.\n");
+}
+
 void cadastrar_livro(livro *l) {
     printf("Digite o nome do livro: ");
     fgets(l->nome, q, stdin);
-    l->nome[strcspn(l->nome, "\n")] = 0; // Remove o caractere de nova linha
+    l->nome[strcspn(l->nome, "\n")] = 0;
+
     printf("Digite o nome do autor: ");
     fgets(l->autor, q, stdin);
-    l->autor[strcspn(l->autor, "\n")] = 0; // Remove o caractere de nova linha
-    printf("Vamos cadastrar agora o genero do livro, digite '1' - Exatas, '2' - Saude, '3' - humanas: ");
+    l->autor[strcspn(l->autor, "\n")] = 0;
+
+    printf("Digite o gênero do livro ('1' - Exatas, '2' - Saúde, '3' - Humanas): ");
     scanf("%d", &l->genero);
-    printf("Digite qual o volume do livro: ");
+
+    printf("Digite o volume do livro: ");
     scanf("%d", &l->volume);
-    printf("Digite a quantidade de livros deste tipo: ");
+
+    printf("Digite a quantidade de exemplares: ");
     scanf("%d", &l->qtd);
+
     l->disponibilidade = 1;
     printf("Livro cadastrado com sucesso!\n");
 }
@@ -57,9 +83,39 @@ void listar_livros(const livro livros[], int quantidade) {
         printf("  Gênero: %d\n", livros[i].genero);
         printf("  Volume: %d\n", livros[i].volume);
         printf("  Quantidade: %d\n", livros[i].qtd);
-        printf("  Disponibilidade: %s\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
-        printf("\n");
+        printf("  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
     }
+}
+
+void atualizar_livro(livro *l) {
+    printf("Atualizando informações do livro:\n");
+
+    printf("Novo nome (atual: %s): ", l->nome);
+    fgets(l->nome, q, stdin);
+    l->nome[strcspn(l->nome, "\n")] = 0;
+
+    printf("Novo autor (atual: %s): ", l->autor);
+    fgets(l->autor, q, stdin);
+    l->autor[strcspn(l->autor, "\n")] = 0;
+
+    printf("Novo gênero (atual: %d): ", l->genero);
+    scanf("%d", &l->genero);
+
+    printf("Novo volume (atual: %d): ", l->volume);
+    scanf("%d", &l->volume);
+
+    printf("Nova quantidade (atual: %d): ", l->qtd);
+    scanf("%d", &l->qtd);
+
+    printf("Livro atualizado com sucesso!\n");
+}
+
+void deletar_livro(livro livros[], int *quantidade, int index) {
+    for (int i = index; i < (*quantidade) - 1; i++) {
+        livros[i] = livros[i + 1];
+    }
+    (*quantidade)--;
+    printf("Livro deletado com sucesso!\n");
 }
 
                                                                    //FUNÇÕES PARA ALUNO (KELVYN)
