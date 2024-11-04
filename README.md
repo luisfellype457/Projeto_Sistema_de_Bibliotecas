@@ -1,9 +1,9 @@
 # Projeto
 
-Faça elevar\n
-O cosmo no seu coração\n
-Todo mal combater\n
-Despertar o poder\n
+Faça elevar
+O cosmo no seu coração
+Todo mal combater
+Despertar o poder
 
 Sua constelação
 Sempre irá te proteger
