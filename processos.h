@@ -1,6 +1,6 @@
 // gestao_livros.h
-#ifndef GESTAO_H
-#define GESTAO_H
+#ifndef PROCESSOS_H
+#define PROCESSOS_H
 
 typedef struct {
     char nome[100];
@@ -14,4 +14,3 @@ int renovarLivro(char *nome);
 int devolverLivro(char *nome);
 
 #endif
-
