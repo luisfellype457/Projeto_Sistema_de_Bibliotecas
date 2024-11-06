@@ -6,9 +6,9 @@
 
 Biblioteca library[MAX_LIBRARIES];
 int count = 0;
+FILE *p;
 
 void criar_arquivo_biblioteca(){
-	FILE *p;
 	int i;
 	p = fopen("Bibliotecas.txt", "w");
 	if (p == NULL){
@@ -23,7 +23,6 @@ void criar_arquivo_biblioteca(){
 }
 
 void ler_arquivo(){
-	FILE *p;
 	p = fopen("Bibliotecas.txt", "a+");
 	if (p == NULL){
 		printf("Nao foi possivel carregar o arquivo!");
@@ -60,9 +59,11 @@ void criar_biblioteca(){
 		printf("Digite o horario de fechamento (e.: 20:00):\n> ");
 		scanf("%5[^\n]", library[count].hora_fechamento);
 		fflush(stdin);
+		printf("\n");
 		printf("Biblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
 		scanf("%3[^\n]", confirm);
 		fflush(stdin);
+		printf("\n");
 		count++;
 	} while (!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
 	criar_arquivo_biblioteca();
@@ -91,7 +92,7 @@ void deletar_biblioteca() {
 	}
 	count--;
 	criar_arquivo_biblioteca();
-	printf("Biblioteca '%s' deletada com sucesso.\n", nome);
+	printf("Biblioteca '%s' deletada com sucesso.\n\n", nome);
 	return;
 }
 
