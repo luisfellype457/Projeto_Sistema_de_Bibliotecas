@@ -12,6 +12,34 @@ typedef struct computador{
 int quantidade_computador = 0;
 Computador computador[MAX];
 
+
+void abrir_arquivo(){
+	int i;
+	FILE *p;
+	p = fopen("Computadores.txt", "w");
+	if(p == NULL){
+		printf("Erro na abertura!\n");
+		exit(1);
+	}
+	for(i=0;i<quantidade_computador;i++){
+		fprintf(p , "%d %d", computador[i].id, computador[i].situacao);
+	}
+	fclose(p);
+	
+}
+
+
+void carregar_arquivo(){
+	FILE *p;
+	p = fopen("Computadores.txt", "r");
+	if(p == NULL){
+		printf("Ainda não há dados de computadores");
+		return;
+	}
+	while(fscanf(p , "%d %d", computador[quantidade_computador].id, computador[quantidade_computador].situacao) == 2){
+		quantidade_computador++;
+	}
+}
 //Vou supor um maximo para os computadores?? ou deixo essa função justamente para limmitar
 //eu tenho que ter um limite se não vou começar a alocar memoria aqui
 void adicionar_computador(){
@@ -164,6 +192,7 @@ void devolver_computador(){
 
 void renovar_computador(){
 	
+	
 	int i,renovar=0;
 	
 	puts("Qual computador deseja renovar?");
@@ -182,17 +211,4 @@ void renovar_computador(){
 		puts("Não há computadores alugados com esse ID");
 	}
 }
-int main(){
-	setlocale(LC_ALL,"portuguese");
-	
-	
-	adicionar_computador();
-	//adicionar_computador();
-	adicionar_computador();
-	//listar_computador();
-	alugar_computador();
-	//printf("situacao do cmopu 1%d", computador[0].situacao);
-	devolver_computador();
-	
-	return 0;
-}
+
