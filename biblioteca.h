@@ -1,5 +1,6 @@
 #ifndef BIBLIOTECA_H
 #define BIBLIOTECA_H
+#include <stdio.h>
 
 typedef struct{
 	char nome[30];
@@ -8,6 +9,8 @@ typedef struct{
 	char hora_abertura[5];
 	int hora_fechamento[5];
 }Biblioteca;
+
+extern FILE *p;
 
 void criar_arquivo_biblioteca();
 
