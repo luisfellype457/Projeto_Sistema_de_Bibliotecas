@@ -136,3 +136,68 @@ void mostrar_biblioteca(){
 	}
 	return;
 }
+
+void update_biblioteca(){
+	char nomep[30], confirm[3];
+	int i, op, found=0;
+	ler_arquivo();
+	printf("Digite o nome da biblioteca a ser alterada:\n> ");
+	scanf("%29[^\n]", nomep);
+	fflush(stdin);
+	for (i = 0; i < count; i++){
+		if (!strcmp(library[i].nome, nomep)){
+			found = 1;
+			printf("\n\tBiblioteca encontrada!\n");
+			printf("Nome: %s\n", library[i].nome);
+			printf("Local: %s\n", library[i].local);
+			printf("Funcionarios: %d\n", library[i].num_funcionarios);
+			printf("Horario de abertura: %s\n", library[i].hora_abertura);
+			printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
+			break;
+		}
+	}
+	if (!found){
+		printf("Biblioteca nao encontrada!\n");
+		return;
+	}
+	printf("Selecione o que deseja alterar:\n");
+	printf("(1) - Nome\n");
+	printf("(2) - Local\n");
+	printf("(3) - Numero de Funcionarios\n");
+	printf("(4) - Horario de Abertura\n");
+	printf("(5) - Horario de Fechamento\n");
+	printf("(6) - Cancelar\n> ");
+	scanf("%d", &op);
+	fflush(stdin);
+	switch(op){
+		case 1:
+			printf("Digite o novo nome:\n> ");
+			scanf("%29[^\n]", library[i].nome);
+			fflush(stdin);
+			break;
+		case 2:
+			printf("Digite o novo local:\n> ");
+			scanf("%29[^\n]", library[i].local);
+			fflush(stdin);
+			break;
+		case 3:
+			printf("Digite o novo numero de funcionarios:\n> ");
+			scanf("%d", &library[i].num_funcionarios);
+			fflush(stdin);
+			break;
+		case 4:
+			printf("Digite o novo horario de abertura (ex.: 08:00):\n> ");
+			scanf("%29[^\n]", library[i].hora_abertura);
+			fflush(stdin);
+			break;
+		case 5:
+			printf("Digite o novo horario de fechamento (ex.: 22:00):\n> ");
+			scanf("%29[^\n]", library[i].hora_fechamento);
+			fflush(stdin);
+			break;
+		default:
+			return;
+	}
+	printf("\nAlterado com sucesso!\n");
+	criar_arquivo_biblioteca();
+}
