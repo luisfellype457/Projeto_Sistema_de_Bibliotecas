@@ -2,11 +2,21 @@
 #define BIBLIOTECA_H
 
 typedef struct{
-	char nome[20];
-	char local[20];
+	char nome[30];
+	char local[30];
 	int num_funcionarios;
-	int hora_abertura;
-	int hora_fechamento;
+	char hora_abertura[5];
+	int hora_fechamento[5];
 }Biblioteca;
+
+void criar_arquivo_biblioteca();
+
+void ler_arquivo();
+
+void criar_biblioteca();
+
+void deletar_biblioteca();
+
+void mostrar_biblioteca();
 
 #endif
