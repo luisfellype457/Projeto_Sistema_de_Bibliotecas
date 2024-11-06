@@ -1,74 +1,106 @@
-// gestao_livros.c
 #include <stdio.h>
-#include <string.h>
-#include "processos.h"
+#include <stdlib.h>
+#define MAX 30
 
-#define Numero_Maximo_de_Livros 100
+typedef struct computador{
+	int id;
+	//boto o id como se fosse o propio indice da string?
+	int situacao;
+}Computador;
 
-// Vari?veis globais (n?o static)
-Cadastro catalogo[Numero_Maximo_de_Livros];
-int totalLivros = 0;
-int i;
+int quantidade_computador = 0;
+Computador computador[MAX];
 
-void adicionarLivro(char *nome, char *categoria) {
-    if (totalLivros < Numero_Maximo_de_Livros) {
-        strncpy(catalogo[totalLivros].nome, nome, sizeof(catalogo[totalLivros].nome) - 1);
-        strncpy(catalogo[totalLivros].categoria, categoria, sizeof(catalogo[totalLivros].categoria) - 1);
-        catalogo[totalLivros].emprestado = 0;
-        totalLivros++;
-    } else {
-        printf("Cat?logo cheio! N?o ? poss?vel adicionar mais livros.\n");
-    }
+//Vou supor um maximo para os computadores?? ou deixo essa função justamente para limmitar
+//eu tenho que ter um limite se não vou começar a alocar memoria aqui
+void adicionar_computador(){
+	int teste=0,i;
+	
+	
+	if(quantidade_computador == MAX){
+		puts("Quantidade máxima de computadores atingida");
+		//tirar esse exit
+		exit(1);
+	}
+	
+	Computador novo_pc;
+	
+	puts("Digite o id do computador");
+	scanf("%d", &novo_pc.id);
+	
+	for(i=0;i<quantidade_computador;i++){
+		if(novo_pc.id == computador[i].id){
+			puts("Já existe um computador com esse ID");
+			teste++;
+		}
+	}
+	
+	if(!teste){
+		novo_pc.situacao = 1; //disponivel
+	
+		computador[quantidade_computador++]= novo_pc;
+	}
+	
 }
 
-int emprestarLivro(char *nome) {
-    for (i = 0; i < totalLivros; i++) {
-        if (strcmp(catalogo[i].nome, nome) == 0) {
-            if (catalogo[i].emprestado == 0) {
-                catalogo[i].emprestado = 1;
-                printf("Livro '%s' emprestado com sucesso!\n", nome);
-                return 1;
-            } else {
-                printf("Livro '%s' j? est? emprestado.\n", nome);
-                return 0;
-            }
-        }
-    }
-    printf("Livro '%s' n?o encontrado no cat?logo.\n", nome);
-    return -1;
-}
-
-int renovarLivro(char *nome) {
+void remover_computador(){
+	
 	int i;
-    for ( i = 0; i < totalLivros; i++) {
-        if (strcmp(catalogo[i].nome, nome) == 0) {
-            if (catalogo[i].emprestado == 1) {
-                printf("Empr?stimo do livro '%s' renovado com sucesso!\n", nome);
-                return 1;
-            } else {
-                printf("O livro '%s' n?o est? emprestado e n?o pode ser renovado.\n", nome);
-                return 0;
-            }
-        }
-    }
-    printf("Livro '%s' n?o encontrado no cat?logo.\n", nome);
-    return -1;
+	
+	do{
+		puts("Digite o id do computador que deseja remover");
+		scanf("%d", &i);
+	}while(i > 1 && i < quantidade_computador);
+	
+	Computador remover_pc;
+	remover_pc.id = 0;
+	remover_pc.situacao = 0;
+	
+	computador[i] = remover_pc;
+	
 }
 
-int devolverLivro(char *nome) {
+void listar_computador(){
+	
 	int i;
-    for (i = 0; i < totalLivros; i++) {
-        if (strcmp(catalogo[i].nome, nome) == 0) {
-            if (catalogo[i].emprestado == 1) {
-                catalogo[i].emprestado = 0;
-                printf("Livro '%s' devolvido com sucesso!\n", nome);
-                return 1;
-            } else {
-                printf("O livro '%s' j? est? dispon?vel.\n", nome);
-                return 0;
-            }
-        }
-    }
-    printf("Livro '%s' n?o encontrado no cat?logo.\n", nome);
-    return -1;
+	
+	if(!quantidade_computador){
+		puts("Nenhum computador cadastrado");
+	}
+	
+	for(i=0;i<quantidade_computador;i++){
+		printf("computador %d\n", i+1);
+		printf("ID: %d\n", computador[i].id);
+		//se for 1(disponivel)
+		if(computador[i].situacao){
+			puts("Disponivel");
+		}else{
+			puts("Indisponivel");
+		}
+		puts("-----------------------------");
+		
+	}
+}
+
+//uso a função listar para já especificar quais estão disponiveis?
+void alugar_computador(){
+	//listar para saber quais os disponiveis
+	listar_computador();
+	
+}
+
+void renovar_computador(){
+}
+
+void devolver_computador(){
+}
+
+int main(){
+
+	adicionar_computador();
+	adicionar_computador();
+	adicionar_computador();
+	listar_computador();
+	
+	return 0;
 }
