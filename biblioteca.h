@@ -19,4 +19,6 @@ void deletar_biblioteca();
 
 void mostrar_biblioteca();
 
+void update_biblioteca();
+
 #endif
