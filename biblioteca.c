@@ -8,13 +8,19 @@ Biblioteca library[MAX_LIBRARIES];
 int count = 0;
 FILE *p;
 
-void criar_arquivo_biblioteca(){
-	int i;
-	p = fopen("Bibliotecas.txt", "w");
+void abrir_arquivo(){
+	p = fopen("Bibliotecas.txt", "a+");
 	if (p == NULL){
 		printf("Nao foi possivel criar/acessar o arquivo!");
 		exit(1);
 	}
+	rewind(p);
+	return;
+}
+
+void criar_arquivo_biblioteca(){
+	int i;
+	abrir_arquivo();
 	for (i=0; i < count; i++){
 		fprintf(p, "Nome: %s\nLocal: %s\nFuncionarios: %d\nAbertura: %s\nFechamento: %s\n\n", library[i].nome, library[i].local, library[i].num_funcionarios, library[i].hora_abertura, library[i].hora_fechamento);
 	}
@@ -23,12 +29,7 @@ void criar_arquivo_biblioteca(){
 }
 
 void ler_arquivo(){
-	p = fopen("Bibliotecas.txt", "a+");
-	if (p == NULL){
-		printf("Nao foi possivel carregar o arquivo!");
-		exit(1);
-	}
-	rewind(p);
+	abrir_arquivo();
 	count = 0;
 	while(fscanf(p, "Nome: %[^\n]\nLocal: %[^\n]\nFuncionarios: %d\nAbertura: %5[^\n]\nFechamento: %5[^\n]\n", library[count].nome, library[count].local, &library[count].num_funcionarios, library[count].hora_abertura, library[count].hora_fechamento) == 5){
 		count++;
