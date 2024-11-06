@@ -72,8 +72,9 @@ void deletar_biblioteca() {
 	int i, j, found = 0;
 	char nome[30];
 	ler_arquivo();
-	printf("Digite o nome da biblioteca a ser excluída:\n> ");
+	printf("Digite o nome da biblioteca a ser excluida:\n> ");
 	scanf("%29[^\n]", nome);
+	fflush(stdin);
 	for (i = 0; i < count; i++) {
 		if (!strcmp(library[i].nome, nome)) {
 			found = 1;
@@ -84,7 +85,7 @@ void deletar_biblioteca() {
 		printf("Biblioteca '%s' nao encontrada.\n", nome);
 		return;
 	}
-	for (j = i; j < count - 1; j++) {
+	for (j = i; j <  ; j++) {
 		library[j] = library[j + 1];
 	}
 	count--;
