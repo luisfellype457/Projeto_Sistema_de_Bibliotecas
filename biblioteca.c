@@ -30,6 +30,7 @@ void ler_arquivo(){
 		exit(1);
 	}
 	rewind(p);
+	count = 0;
 	while(fscanf(p, "Nome: %[^\n]\nLocal: %[^\n]\nFuncionarios: %d\nAbertura: %5[^\n]\nFechamento: %5[^\n]\n", library[count].nome, library[count].local, &library[count].num_funcionarios, library[count].hora_abertura, library[count].hora_fechamento) == 5){
 		count++;
 		if (count >= MAX_LIBRARIES)
@@ -63,7 +64,7 @@ void criar_biblioteca(){
 		scanf("%3[^\n]", confirm);
 		fflush(stdin);
 		count++;
-	} while (!strcmp(confirm, "sim") || !strcmp(confirm, "s"));
+	} while (!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
 	criar_arquivo_biblioteca();
 	return;
 }
@@ -85,7 +86,7 @@ void deletar_biblioteca() {
 		printf("Biblioteca '%s' nao encontrada.\n", nome);
 		return;
 	}
-	for (j = i; j <  ; j++) {
+	for (j = i; j < count - 1; j++) {
 		library[j] = library[j + 1];
 	}
 	count--;
@@ -117,12 +118,15 @@ void mostrar_biblioteca(){
 					printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
 				}
 			}
+			if (!found)
+				printf("Biblioteca nao econtrada.\n");
 			printf("Deseja repetir a busca? (sim/nao)\n> ");
 			scanf("%3[^\n]", confirm);
 			fflush(stdin);
-		} while(!strcmp(confirm, "sim") || !strcmp(confirm, "s"));
+		} while(!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
 	} else {
 		for (i=0; i < count; i++){
+			printf("\t#Biblioteca %d\n", i+1);
 			printf("Nome: %s\n", library[i].nome);
 			printf("Local: %s\n", library[i].local);
 			printf("Numero de Funcionarios: %d\n", library[i].num_funcionarios);
