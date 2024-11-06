@@ -3,28 +3,46 @@
 #include <string.h>
 #include "livro.h"
 
-void salvar_livros(const livro livros[], int quantidade) {
-    FILE *arquivo = fopen("livros_cadastrados.txt", "w");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para salvar os livros.\n");
-        return;
-    }
+// Variável global do tipo FILE
+FILE *arquivoLivros = NULL;
 
-    for (int i = 0; i < quantidade; i++) {
-        fprintf(arquivo, "Livro %d:\n", i + 1);
-        fprintf(arquivo, "  Nome: %s\n", livros[i].nome);
-        fprintf(arquivo, "  Autor: %s\n", livros[i].autor);
-        fprintf(arquivo, "  Gênero: %d\n", livros[i].genero);
-        fprintf(arquivo, "  Volume: %d\n", livros[i].volume);
-        fprintf(arquivo, "  Quantidade: %d\n", livros[i].qtd);
-        fprintf(arquivo, "  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
+// Função para abrir o arquivo de livros
+void abrir_arquivo() {
+    if (arquivoLivros == NULL) {
+        arquivoLivros = fopen("livros_criados.txt", "a+"); // abre o arquivo para leitura e escrita
+        if (arquivoLivros == NULL) {
+            printf("Erro ao abrir o arquivo!\n");
+            exit(1); // Fecha o programa em caso de erro ao abrir o arquivo
+        }
     }
-
-    fclose(arquivo);
-    printf("Lista de livros salva em 'livros_cadastrados.txt'.\n");
 }
 
-void cadastrar_livro(livro *l) {
+// Função para fechar o arquivo
+void fechar_arquivo() {
+    if (arquivoLivros != NULL) {
+        fclose(arquivoLivros);
+        arquivoLivros = NULL; // Garante que a variável global seja nula após o fechamento
+    }
+}
+
+void salvar_livros(const livro livros[], int quantidade) {
+    abrir_arquivo(); // Abre o arquivo (caso ainda não tenha sido aberto)
+
+    // Salva os livros no arquivo
+    for (int i = 0; i < quantidade; i++) {
+        fprintf(arquivoLivros, "Livro %d:\n", i + 1);
+        fprintf(arquivoLivros, "  Nome: %s\n", livros[i].nome);
+        fprintf(arquivoLivros, "  Autor: %s\n", livros[i].autor);
+        fprintf(arquivoLivros, "  Genero: %d\n", livros[i].genero);
+        fprintf(arquivoLivros, "  Volume: %d\n", livros[i].volume);
+        fprintf(arquivoLivros, "  Quantidade: %d\n", livros[i].qtd);
+        fprintf(arquivoLivros, "  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponivel" : "Indisponivel");
+    }
+
+    // Não precisa fechar o arquivo aqui, pois a variável global será reutilizada em outras funções
+}
+
+void criar_livro(livro *l) {
     printf("Digite o nome do livro: ");
     fgets(l->nome, q, stdin);
     l->nome[strcspn(l->nome, "\n")] = 0;
@@ -33,7 +51,7 @@ void cadastrar_livro(livro *l) {
     fgets(l->autor, q, stdin);
     l->autor[strcspn(l->autor, "\n")] = 0;
 
-    printf("Digite o gênero do livro ('1' - Exatas, '2' - Saúde, '3' - Humanas): ");
+    printf("Digite o genero do livro ('1' - Exatas, '2' - Saude, '3' - Humanas): ");
     scanf("%d", &l->genero);
 
     printf("Digite o volume do livro: ");
@@ -43,7 +61,7 @@ void cadastrar_livro(livro *l) {
     scanf("%d", &l->qtd);
 
     l->disponibilidade = 1;
-    printf("Livro cadastrado com sucesso!\n");
+    printf("Livro criado com sucesso!\n");
 }
 
 void buscarLivroPorNome(livro livros[], int quantidade, const char *nomeProcurado) {
@@ -54,10 +72,10 @@ void buscarLivroPorNome(livro livros[], int quantidade, const char *nomeProcurad
         if (strstr(livros[i].nome, nomeProcurado) != NULL) {
             printf("Nome: %s\n", livros[i].nome);
             printf("Autor: %s\n", livros[i].autor);
-            printf("Gênero: %d\n", livros[i].genero);
+            printf("Genero: %d\n", livros[i].genero);
             printf("Volume: %d\n", livros[i].volume);
             printf("Quantidade: %d\n", livros[i].qtd);
-            printf("Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
+            printf("Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponivel" : "Indisponivel");
             encontrado = 1;
         }
     }
@@ -78,15 +96,15 @@ void listar_livros(const livro livros[], int quantidade) {
         printf("Livro %d:\n", i + 1);
         printf("  Nome: %s\n", livros[i].nome);
         printf("  Autor: %s\n", livros[i].autor);
-        printf("  Gênero: %d\n", livros[i].genero);
+        printf("  Genero: %d\n", livros[i].genero);
         printf("  Volume: %d\n", livros[i].volume);
         printf("  Quantidade: %d\n", livros[i].qtd);
-        printf("  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
+        printf("  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponivel" : "Indisponivel");
     }
 }
 
 void atualizar_livro(livro *l) {
-    printf("Atualizando informações do livro:\n");
+    printf("Atualizando informacoes do livro:\n");
 
     printf("Novo nome (atual: %s): ", l->nome);
     fgets(l->nome, q, stdin);
@@ -112,6 +130,7 @@ void deletar_livro(livro livros[], int *quantidade, int index) {
     for (int i = index; i < (*quantidade) - 1; i++) {
         livros[i] = livros[i + 1];
     }
-    (*quantidade)--;
+    (*quantidade)--; // Diminui a quantidade de livros
     printf("Livro deletado com sucesso!\n");
 }
+
