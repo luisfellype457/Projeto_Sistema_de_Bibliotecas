@@ -8,19 +8,13 @@ Biblioteca library[MAX_LIBRARIES];
 int count = 0;
 FILE *p;
 
-void abrir_arquivo(){
-	p = fopen("Bibliotecas.txt", "a+");
-	if (p == NULL){
-		printf("Nao foi possivel criar/acessar o arquivo!");
-		exit(1);
-	}
-	rewind(p);
-	return;
-}
-
 void criar_arquivo_biblioteca(){
 	int i;
-	abrir_arquivo();
+	p = fopen("Bibliotecas.txt", "w");
+	if (p == NULL){
+		printf("Nao foi possivel abrir o arquivo.");
+		exit(1);
+	}
 	for (i=0; i < count; i++){
 		fprintf(p, "Nome: %s\nLocal: %s\nFuncionarios: %d\nAbertura: %s\nFechamento: %s\n\n", library[i].nome, library[i].local, library[i].num_funcionarios, library[i].hora_abertura, library[i].hora_fechamento);
 	}
@@ -29,7 +23,11 @@ void criar_arquivo_biblioteca(){
 }
 
 void ler_arquivo(){
-	abrir_arquivo();
+	p = fopen("Bibliotecas.txt", "a+");
+	if (p == NULL){
+		printf("Nao foi possivel abrir/ler o arquivo.");
+		exit(2);
+	}
 	count = 0;
 	while(fscanf(p, "Nome: %[^\n]\nLocal: %[^\n]\nFuncionarios: %d\nAbertura: %5[^\n]\nFechamento: %5[^\n]\n", library[count].nome, library[count].local, &library[count].num_funcionarios, library[count].hora_abertura, library[count].hora_fechamento) == 5){
 		count++;
@@ -60,8 +58,7 @@ void criar_biblioteca(){
 		printf("Digite o horario de fechamento (e.: 20:00):\n> ");
 		scanf("%5[^\n]", library[count].hora_fechamento);
 		fflush(stdin);
-		printf("\n");
-		printf("Biblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
+		printf("\nBiblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
 		scanf("%3[^\n]", confirm);
 		fflush(stdin);
 		printf("\n");
@@ -112,7 +109,7 @@ void mostrar_biblioteca(){
 			for (i=0; i < count; i++){
 				if (!strcmp(library[i].nome, nomep)){
 					found=1;
-					printf("\tBiblioteca encontrada!\n");
+					printf("\n\tBiblioteca encontrada!\n\n");
 					printf("Nome: %s\n", library[i].nome);
 					printf("Local: %s\n", library[i].local);
 					printf("Funcionarios: %d\n", library[i].num_funcionarios);
@@ -121,7 +118,7 @@ void mostrar_biblioteca(){
 				}
 			}
 			if (!found)
-				printf("Biblioteca nao econtrada.\n");
+				printf("Biblioteca nao econtrada!\n");
 			printf("Deseja repetir a busca? (sim/nao)\n> ");
 			scanf("%3[^\n]", confirm);
 			fflush(stdin);
@@ -143,7 +140,7 @@ void update_biblioteca(){
 	char nomep[30], confirm[3];
 	int i, op, found=0;
 	ler_arquivo();
-	printf("Digite o nome da biblioteca a ser alterada:\n> ");
+	printf("\nDigite o nome da biblioteca a ser alterada:\n> ");
 	scanf("%29[^\n]", nomep);
 	fflush(stdin);
 	for (i = 0; i < count; i++){
@@ -159,7 +156,7 @@ void update_biblioteca(){
 		}
 	}
 	if (!found){
-		printf("Biblioteca nao encontrada!\n");
+		printf("\n\tBiblioteca nao encontrada!\n\n");
 		return;
 	}
 	printf("Selecione o que deseja alterar:\n");
