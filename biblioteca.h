@@ -12,8 +12,6 @@ typedef struct{
 
 extern FILE *p;
 
-void abrir_arquivo();
-
 void criar_arquivo_biblioteca();
 
 void ler_arquivo();
