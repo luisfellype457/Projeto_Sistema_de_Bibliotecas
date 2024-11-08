@@ -82,7 +82,7 @@ void deletar_biblioteca() {
 		}
 	}
 	if (!found) {
-		printf("Biblioteca '%s' nao encontrada.\n", nome);
+		printf("\nBiblioteca '%s' nao encontrada.\n", nome);
 		return;
 	}
 	for (j = i; j < count - 1; j++) {
@@ -90,7 +90,7 @@ void deletar_biblioteca() {
 	}
 	count--;
 	criar_arquivo_biblioteca();
-	printf("Biblioteca '%s' deletada com sucesso.\n\n", nome);
+	printf("\nBiblioteca '%s' deletada com sucesso.\n\n", nome);
 	return;
 }
 
@@ -98,7 +98,7 @@ void mostrar_biblioteca(){
 	int i, c, found=0;
 	char nomep[30], confirm[3];
 	ler_arquivo();
-	printf("\n(1) - Pesquisar uma biblioteca\n(2) - Mostrar lista completa\n\n> ");
+	printf("\n(1) - Pesquisar uma biblioteca\n(2) - Mostrar lista completa\n(3) - Cancelar\n\n> ");
 	scanf("%d", &c);
 	fflush(stdin);
 	if (c == 1){
@@ -118,20 +118,22 @@ void mostrar_biblioteca(){
 				}
 			}
 			if (!found)
-				printf("Biblioteca nao econtrada!\n");
+				printf("\n\tBiblioteca nao econtrada!\n\n");
 			printf("Deseja repetir a busca? (sim/nao)\n> ");
 			scanf("%3[^\n]", confirm);
 			fflush(stdin);
 		} while(!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
-	} else {
+	} else if (c==2) {
 		for (i=0; i < count; i++){
-			printf("\t#Biblioteca %d\n", i+1);
+			printf("\n\t#Biblioteca %d\n\n", i+1);
 			printf("Nome: %s\n", library[i].nome);
 			printf("Local: %s\n", library[i].local);
 			printf("Numero de Funcionarios: %d\n", library[i].num_funcionarios);
 			printf("Horario de abertura: %s\n", library[i].hora_abertura);
 			printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
 		}
+	} else {
+		return;
 	}
 	return;
 }
@@ -146,7 +148,7 @@ void update_biblioteca(){
 	for (i = 0; i < count; i++){
 		if (!strcmp(library[i].nome, nomep)){
 			found = 1;
-			printf("\n\tBiblioteca encontrada!\n");
+			printf("\n\tBiblioteca encontrada!\n\n");
 			printf("Nome: %s\n", library[i].nome);
 			printf("Local: %s\n", library[i].local);
 			printf("Funcionarios: %d\n", library[i].num_funcionarios);
@@ -159,13 +161,13 @@ void update_biblioteca(){
 		printf("\n\tBiblioteca nao encontrada!\n\n");
 		return;
 	}
-	printf("Selecione o que deseja alterar:\n");
+	printf("Selecione o que deseja alterar:\n\n");
 	printf("(1) - Nome\n");
 	printf("(2) - Local\n");
 	printf("(3) - Numero de Funcionarios\n");
 	printf("(4) - Horario de Abertura\n");
 	printf("(5) - Horario de Fechamento\n");
-	printf("(6) - Cancelar\n> ");
+	printf("(6) - Cancelar\n\n> ");
 	scanf("%d", &op);
 	fflush(stdin);
 	switch(op){
@@ -197,6 +199,6 @@ void update_biblioteca(){
 		default:
 			return;
 	}
-	printf("\nAlterado com sucesso!\n");
+	printf("\nAlterado com sucesso!\n\n");
 	criar_arquivo_biblioteca();
 }
