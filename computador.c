@@ -1,4 +1,3 @@
-// computador.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -6,31 +5,29 @@
 
 typedef struct computador {
     int id;
-    int situacao; // 1 -> disponível, 0 -> alugado, 2 -> removido
+    int situacao; // 1 -> disponível, 0 -> indisponível, 2 -> removido
 } Computador;
 
 int quantidade_computador = 0;
 Computador computador[MAX];
 
-// Função para abrir e salvar os dados no arquivo
 void abrir_arquivo() {
     int i;
     FILE *f;
-    f = fopen("Computadores.txt", "w");  // Modo 'w' sobrescreve o arquivo
+    f = fopen("Computadores.txt", "w");
     if (f == NULL) {
         printf("Erro na abertura!\n");
         exit(1);
     }
     
-    // Grava todos os computadores, independentemente de sua situação
-    for (i = 0; i < quantidade_computador; i++) {
-        fprintf(f, "%d %d\n", computador[i].id, computador[i].situacao);
+    for (i = 0; i < quantidade_computador; i++) {//É pora gravar computadores removidos?
+        if (computador[i].situacao != 2) {  // Não grava computadores removidos
+            fprintf(f, "%d %d\n", computador[i].id, computador[i].situacao);
+        }
     }
-
     fclose(f);
 }
 
-// Carregar os dados do arquivo
 void carregar_arquivo() {
     FILE *f;
     f = fopen("Computadores.txt", "r");
@@ -45,7 +42,7 @@ void carregar_arquivo() {
 }
 
 void adicionar_computador() {
-    int i;
+    int i, teste = 0;
     if (quantidade_computador == MAX) {
         puts("Quantidade máxima de computadores atingida");
         return;
@@ -55,13 +52,11 @@ void adicionar_computador() {
     puts("Digite o id do computador que deseja adicionar");
     scanf("%d", &novo_pc.id);
 
-    // Verifica se o computador já existe
     for (i = 0; i < quantidade_computador; i++) {
         if (novo_pc.id == computador[i].id) {
             if (computador[i].situacao == 2) {  // Caso o computador tenha sido removido
                 computador[i].situacao = 1;  // Reativa o computador removido
                 puts("Computador reativado com sucesso!");
-                abrir_arquivo();  // Regravar o arquivo
                 return;
             }
             puts("Já existe um computador com esse ID");
@@ -71,7 +66,6 @@ void adicionar_computador() {
 
     novo_pc.situacao = 1;  // Disponível
     computador[quantidade_computador++] = novo_pc;
-    abrir_arquivo();  // Regravar o arquivo
 }
 
 void remover_computador() {
@@ -88,7 +82,6 @@ void remover_computador() {
             computador_encontrado = 1;
             computador[i].situacao = 2;  // Marca o computador como removido
             printf("Computador com ID %d removido com sucesso.\n", id_remover);
-            abrir_arquivo();  // Regravar o arquivo
             break;
         }
     }
@@ -107,14 +100,16 @@ void listar_computador() {
     }
 
     for (i = 0; i < quantidade_computador; i++) {
+        if (computador[i].situacao == 2) {
+            continue;  // Ignora computadores removidos
+        }
+
         printf("\nComputador %d\n", i + 1);
         printf("ID: %d\n", computador[i].id);
         if (computador[i].situacao == 1) {
             puts("Disponível");
-        } else if (computador[i].situacao == 0) {
-            puts("Indisponível (alugado)");
         } else {
-            puts("Removido");
+            puts("Indisponível");
         }
         puts("-----------------------------");
     }
@@ -134,9 +129,8 @@ void alugar_computador() {
             situacao = 1;
 
             if (computador[i].situacao == 1) {
-                computador[i].situacao = 0;  // Marca como alugado
+                computador[i].situacao = 0;  // Marca como indisponível
                 printf("Computador %d alugado com sucesso!\n", id_aluguel);
-                abrir_arquivo();  // Regravar o arquivo
             } else {
                 puts("Esse computador está indisponível para aluguel.");
             }
@@ -163,7 +157,6 @@ void devolver_computador() {
             } else {
                 computador[i].situacao = 1;  // Marca como disponível
                 puts("Computador devolvido com sucesso.");
-                abrir_arquivo();  // Regravar o arquivo
             }
             break;
         }
@@ -185,7 +178,6 @@ void renovar_computador() {
             computador[i].situacao = 0;  // Apenas confirma o status "alugado"
             printf("Computador %d renovado com sucesso!\n", computador[i].id);
             renovar++;
-            abrir_arquivo();  // Regravar o arquivo
         }
     }
 
