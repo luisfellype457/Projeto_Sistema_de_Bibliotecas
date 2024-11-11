@@ -3,8 +3,7 @@
 #include <string.h>
 #include "livro.h"
 
-
-static FILE *arquivoLivros = NULL; 
+FILE *arquivoLivros = NULL;  // Variável global para o arquivo
 
 int i, encontrado, opcao, index;
 char nomeProcurado[q];
