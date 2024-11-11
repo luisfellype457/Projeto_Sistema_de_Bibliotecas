@@ -1,5 +1,6 @@
 #ifndef ALUNOS_H
 #define ALUNOS_H
+#include <stdio.h>
 
 //structs
 typedef struct Aluno {
@@ -8,6 +9,10 @@ typedef struct Aluno {
 	char cpf[12];
 	char senha[20];	
 }Aluno;
+
+extern FILE *f;
+
+extern FILE *f;
 
 void abrir_arquivo_alunos ();
 
