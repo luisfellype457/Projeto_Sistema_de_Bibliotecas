@@ -1,25 +1,18 @@
+#include "alunos.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #define MAX 1000 //alunos
 
-//structs
-typedef struct Aluno {
-	char nome[100];
-	char curso[50];
-	char cpf[12];
-	char senha[20];	
-}Aluno;
-
 Aluno cad[MAX];
-
 int total_alunos = 0;
+void continuar ();
+void menu ();
 
 void abrir_arquivo_alunos () {
 	int i;
-	FILE *f;
 	f = fopen("Alunos.txt", "w");
-	if (f == NULL) {
+	if (f== NULL) {
 		printf("Erro na abertura!\n");
 		exit(1);
 	}
@@ -30,7 +23,6 @@ void abrir_arquivo_alunos () {
 }
 
 void carregar_alunos () {
-	FILE *f;
     f = fopen("Alunos.txt", "r");
     if (f == NULL) {
         printf("Ainda nao ha dados de alunos. Os dados serao caregados apos o primeiro cadastro.\n");
@@ -114,8 +106,24 @@ void exibir_aluno () {
 	}	
 }
 
-int main () {
-	setlocale(LC_ALL, "Portuguese");	
-	carregar_alunos();
+void continuar () {
+	int op;
+	printf("Deseja voltar ao Menu ou Sair?\n");
+	puts("(1) Menu.");
+	printf("(2) Sair.\n>");
+	scanf("%d", &op);
 
+	switch(op) {
+		case 1:
+		{
+			printf("--------------------------------------------------------------------------------\n\n");
+			menu();
+			break;
+		}
+		case 2:
+		{
+			exit(1);
+			break;
+		}
+	}	
 }
