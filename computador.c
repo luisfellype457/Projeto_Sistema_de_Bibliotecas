@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include "computador.h"
 #define MAX 30
 
-typedef struct computador {
-    int id;
-    int situacao; // 1 -> disponível, 0 -> indisponível, 2 -> removido
-} Computador;
+
 
 int quantidade_computador = 0;
 Computador computador[MAX];
 
 void abrir_arquivo() {
     int i;
-    FILE *f;
     f = fopen("Computadores.txt", "w");
     if (f == NULL) {
         printf("Erro na abertura!\n");
@@ -29,7 +26,6 @@ void abrir_arquivo() {
 }
 
 void carregar_arquivo() {
-    FILE *f;
     f = fopen("Computadores.txt", "r");
     if (f == NULL) {
         printf("Ainda não há dados de computadores.\n");
@@ -66,6 +62,7 @@ void adicionar_computador() {
 
     novo_pc.situacao = 1;  // Disponível
     computador[quantidade_computador++] = novo_pc;
+    abrir_arquivo();
 }
 
 void remover_computador() {
