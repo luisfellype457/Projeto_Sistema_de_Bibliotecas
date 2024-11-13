@@ -4,26 +4,24 @@
 #include "computador.h"
 #define MAX 30
 
-
-
 int quantidade_computador = 0;
 Computador computador[MAX];
 
 void abrir_arquivo() {
-    int i;
+	int i;
+	
     f = fopen("Computadores.txt", "w");
     if (f == NULL) {
-        printf("Erro na abertura!\n");
+        printf("Erro na abertura do arquivo!\n");
         exit(1);
     }
-    
-    for (i = 0; i < quantidade_computador; i++) {//É pora gravar computadores removidos?
-        if (computador[i].situacao != 2) {  // Não grava computadores removidos
-            fprintf(f, "%d %d\n", computador[i].id, computador[i].situacao);
-        }
+    for ( i = 0; i < quantidade_computador; i++) {
+    	//tirei a parte que não mostrava a situação == 3;
+            fprintf(f, "Computador.id:%d Computador.situacao:%d\n", computador[i].id, computador[i].situacao);
     }
     fclose(f);
 }
+
 
 void carregar_arquivo() {
     f = fopen("Computadores.txt", "r");
@@ -86,6 +84,8 @@ void remover_computador() {
     if (!computador_encontrado) {
         puts("Computador não encontrado com o ID fornecido.");
     }
+    
+    abrir_arquivo();
 }
 
 void listar_computador() {
