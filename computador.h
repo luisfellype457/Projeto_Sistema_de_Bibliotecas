@@ -9,7 +9,7 @@ typedef struct computador{
 	int situacao;
 }Computador;
 
-
+FILE *f;
 
 
 void abrir_arquivo();
