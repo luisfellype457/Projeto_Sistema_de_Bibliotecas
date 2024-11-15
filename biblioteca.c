@@ -231,5 +231,5 @@ void menu_bibliotecas(){
 				break;
 		}
 	} while (op < 5 && op > 0);
-	return 0;
+	return;
 }
