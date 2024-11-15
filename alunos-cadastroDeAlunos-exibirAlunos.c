@@ -77,7 +77,7 @@ void atualizar_aluno() {
     for (i = 0; i < total_alunos; i++) {
         if (strcasecmp(cpf, cad[i].cpf) == 0) {
             encontrado = 1;
-            printf("\nAtualizando informações do aluno %s\n", cad[i].nome);
+            printf("\nAtualizando informacoes do aluno %s\n", cad[i].nome);
 
             do {
                 printf("\nEscolha o campo que deseja atualizar:\n");
@@ -108,10 +108,10 @@ void atualizar_aluno() {
                         printf("CPF atualizado com sucesso!\n");
                         break;
                     case 4:
-                        printf("Saindo da atualização do aluno.\n");
+                        printf("Saindo da atualizacao do aluno.\n");
                         break;
                     default:
-                        printf("Opção inválida! Tente novamente.\n");
+                        printf("Opção invalida! Tente novamente.\n");
                 }
             } while (opcao != 4);
 
