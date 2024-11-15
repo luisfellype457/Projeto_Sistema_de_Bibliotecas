@@ -9,9 +9,10 @@ int total_alunos = 0;
 FILE *f;
 
 void menu_alunos() {
+	carregar_alunos();
     int op;
     do {
-        printf("\n- - - - - Menu Alunos - - - - -\n\n");
+        printf("\n- - - - - [Menu Alunos] - - - - -\n\n");
         printf("(1) - Cadastrar aluno.\n");
         printf("(2) - Pesquisar/listar alunos.\n");
         printf("(3) - Deletar aluno.\n");
@@ -171,7 +172,7 @@ void cadastro() {
 void exibir_aluno() {
     int op, j;
     char cpf[12];
-    printf("Deseja exibir um unico aluno ou todos os alunos?\n");
+    printf("\nDeseja exibir um unico aluno ou todos os alunos?\n");
     puts("(1) Buscar aluno.");
     printf("(2) Exibir todos.\n>");
     scanf("%d", &op);
@@ -202,12 +203,12 @@ void exibir_aluno() {
 
         case (2): {
             for (j = 0; j < total_alunos; j++) {
-                printf("Aluno numero %d:\n", j + 1);
+                printf("\nAluno numero %d:\n", j + 1);
                 printf("Nome: %s\n", cad[j].nome);
                 printf("Curso: %s\n", cad[j].curso);
                 printf("CPF: %s\n", cad[j].cpf);
-                printf("\n");
             }
+            printf("\n");
             break;
         }
     }
