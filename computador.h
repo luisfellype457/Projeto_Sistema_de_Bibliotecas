@@ -1,3 +1,4 @@
+//computador.h
 #ifndef COMPUTADOR_H
 #define COMPUTADOR_H
 #define MAX 30
