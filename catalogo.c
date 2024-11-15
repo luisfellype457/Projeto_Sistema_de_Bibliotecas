@@ -5,7 +5,7 @@ int totalLivros = 0;
 
 char nome[Comprimento_maximo];
 char categoria[Tamanho_Maximo_da_Categoria];
-int emprestado;
+int emprestado, i;
 
 void menu_catalogo(){
 	int opcao;
@@ -47,7 +47,7 @@ void menu_catalogo(){
                 fgets(nome, Comprimento_maximo, stdin);
                 nome[strcspn(nome, "\n")] = '\0';
 
-                printf("Emprestado? (1 para Sim, 0 para Não): ");
+                printf("Emprestado? (1 para Sim, 0 para Nao): ");
                 scanf("%d", &emprestado);
 
                 AtualizarEmprestimo(nome, emprestado);
@@ -89,7 +89,7 @@ void AdicionarLivro(char *nome, char *categoria) {
 }
 
 void ListarLivros() {
-    for (int i = 0; i < totalLivros; i++) {
+    for (i = 0; i < totalLivros; i++) {
         printf("Nome: %s\nCategoria: %s\nEmprestado: %s\n\n", 
                catalogo[i].nome, catalogo[i].categoria, 
                catalogo[i].emprestado ? "Sim" : "NÃ£o");
@@ -97,9 +97,10 @@ void ListarLivros() {
 }
 
 void RemoverLivro(char *nome) {
-    for (int i = 0; i < totalLivros; i++) {
+	int j;
+    for (i = 0; i < totalLivros; i++) {
         if (strcmp(catalogo[i].nome, nome) == 0) {
-            for (int j = i; j < totalLivros - 1; j++) {
+            for (j = i; j < totalLivros - 1; j++) {
                 catalogo[j] = catalogo[j + 1];
             }
             totalLivros--;
@@ -111,7 +112,7 @@ void RemoverLivro(char *nome) {
 }
 
 void AtualizarEmprestimo(char *nome, int emprestado) {
-    for (int i = 0; i < totalLivros; i++) {
+    for (i = 0; i < totalLivros; i++) {
         if (strcmp(catalogo[i].nome, nome) == 0) {
             catalogo[i].emprestado = emprestado;
             printf("Status de emprestimo atualizado.\n");
@@ -122,7 +123,7 @@ void AtualizarEmprestimo(char *nome, int emprestado) {
 }
 
 int verificarEmprestimo(char *nome) {
-    for (int i = 0; i < totalLivros; i++) {
+    for (i = 0; i < totalLivros; i++) {
         if (strcmp(catalogo[i].nome, nome) == 0) {
             return catalogo[i].emprestado;
         }
@@ -136,7 +137,7 @@ void SalvarCatalogo() {
         printf("Erro ao abrir o arquivo para salvar.\n");
         return;
     }
-    for (int i = 0; i < totalLivros; i++) {
+    for (i = 0; i < totalLivros; i++) {
         fprintf(file, "%s;%s;%d\n", catalogo[i].nome, catalogo[i].categoria, catalogo[i].emprestado);
     }
     fclose(file);
