@@ -1,43 +1,29 @@
 #ifndef BIBLIOTECA_H
 #define BIBLIOTECA_H
+#include <stdio.h>
 
-                                      //FUNÇÕES E PROTÓTIPOS PARA LIVRO (ALEC)
+typedef struct{
+	char nome[30];
+	char local[30];
+	int num_funcionarios;
+	char hora_abertura[5];
+	int hora_fechamento[5];
+}Biblioteca;
 
-#define q 50
+extern FILE *p;
 
-typedef struct livro {
-    char nome[q];
-    char autor[q];
-    int genero; // '1' - Exatas, '2' - Saúde, '3' - Humanas
-    int volume;
-    int qtd;
-    int disponibilidade;
-} livro;
+void criar_arquivo_biblioteca();
 
-void cadastrar_livro(livro *l);
-void buscarLivroPorNome(livro livros[], int quantidade, const char *nomeProcurado);
-void listar_livros(const livro livros[], int quantidade);
-void atualizar_livro(livro *l);
-void deletar_livro(livro livros[], int *quantidade, int index);
-void salvar_livros(const livro livros[], int quantidade); // Nova função para salvar todos os livros no arquivo
+void ler_arquivo();
 
+void criar_biblioteca();
 
-                                      //FUNÇÕES E PROTÓTIPOS PARA ALUNOS (KELVYN)
+void deletar_biblioteca();
 
+void mostrar_biblioteca();
 
-typedef struct Aluno {
-	char nome[100];
-	char curso[50];
-	char cpf[12];
-	char senha[20];	
-}Aluno;
+void update_biblioteca();
 
-void abrir_arquivo_alunos ();
+void menu_bibliotecas();
 
-void carregar_alunos ();
-
-void cadastro ();
-
-void exibir_aluno ();
-
-void continuar ();
+#endif
