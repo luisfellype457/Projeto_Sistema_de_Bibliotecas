@@ -17,7 +17,7 @@ int main(){
 		printf("(3) - Catalogo\n");
 		printf("(4) - Computadores\n");
 		printf("(5) - Bibliotecas\n");
-		printf("(6) - Sair\n\n> ");
+		printf("(6) - Encerrar Programa\n\n> ");
 		scanf("%d", &op);
 		fflush(stdin);
 		switch(op){
