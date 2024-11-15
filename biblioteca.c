@@ -1,220 +1,235 @@
+#include "biblioteca.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "biblioteca.h"
+#define MAX_LIBRARIES 10
 
-                                                                   //FUNÇÕES PARA LIVRO (ALEC)
+Biblioteca library[MAX_LIBRARIES];
+int count = 0;
+FILE *p;
 
-void salvar_livros(const livro livros[], int quantidade) {
-    FILE *arquivo = fopen("livros_cadastrados.txt", "w");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para salvar os livros.\n");
-        return;
-    }
-
-    for (int i = 0; i < quantidade; i++) {
-        fprintf(arquivo, "Livro %d:\n", i + 1);
-        fprintf(arquivo, "  Nome: %s\n", livros[i].nome);
-        fprintf(arquivo, "  Autor: %s\n", livros[i].autor);
-        fprintf(arquivo, "  Gênero: %d\n", livros[i].genero);
-        fprintf(arquivo, "  Volume: %d\n", livros[i].volume);
-        fprintf(arquivo, "  Quantidade: %d\n", livros[i].qtd);
-        fprintf(arquivo, "  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
-    }
-
-    fclose(arquivo);
-    printf("Lista de livros salva em 'livros_cadastrados.txt'.\n");
-}
-
-void cadastrar_livro(livro *l) {
-    printf("Digite o nome do livro: ");
-    fgets(l->nome, q, stdin);
-    l->nome[strcspn(l->nome, "\n")] = 0;
-
-    printf("Digite o nome do autor: ");
-    fgets(l->autor, q, stdin);
-    l->autor[strcspn(l->autor, "\n")] = 0;
-
-    printf("Digite o gênero do livro ('1' - Exatas, '2' - Saúde, '3' - Humanas): ");
-    scanf("%d", &l->genero);
-
-    printf("Digite o volume do livro: ");
-    scanf("%d", &l->volume);
-
-    printf("Digite a quantidade de exemplares: ");
-    scanf("%d", &l->qtd);
-
-    l->disponibilidade = 1;
-    printf("Livro cadastrado com sucesso!\n");
-}
-
-void buscarLivroPorNome(livro livros[], int quantidade, const char *nomeProcurado) {
-    int encontrado = 0;
-
-    printf("Resultados da busca por '%s':\n", nomeProcurado);
-    for (int i = 0; i < quantidade; i++) {
-        if (strstr(livros[i].nome, nomeProcurado) != NULL) {
-            printf("Nome: %s\n", livros[i].nome);
-            printf("Autor: %s\n", livros[i].autor);
-            printf("Gênero: %d\n", livros[i].genero);
-            printf("Volume: %d\n", livros[i].volume);
-            printf("Quantidade: %d\n", livros[i].qtd);
-            printf("Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
-            encontrado = 1;
-        }
-    }
-
-    if (!encontrado) {
-        printf("Nenhum livro encontrado com o nome '%s'.\n", nomeProcurado);
-    }
-}
-
-void listar_livros(const livro livros[], int quantidade) {
-    if (quantidade == 0) {
-        printf("Nenhum livro cadastrado.\n");
-        return;
-    }
-
-    printf("Lista de Livros:\n");
-    for (int i = 0; i < quantidade; i++) {
-        printf("Livro %d:\n", i + 1);
-        printf("  Nome: %s\n", livros[i].nome);
-        printf("  Autor: %s\n", livros[i].autor);
-        printf("  Gênero: %d\n", livros[i].genero);
-        printf("  Volume: %d\n", livros[i].volume);
-        printf("  Quantidade: %d\n", livros[i].qtd);
-        printf("  Disponibilidade: %s\n\n", livros[i].disponibilidade ? "Disponível" : "Indisponível");
-    }
-}
-
-void atualizar_livro(livro *l) {
-    printf("Atualizando informações do livro:\n");
-
-    printf("Novo nome (atual: %s): ", l->nome);
-    fgets(l->nome, q, stdin);
-    l->nome[strcspn(l->nome, "\n")] = 0;
-
-    printf("Novo autor (atual: %s): ", l->autor);
-    fgets(l->autor, q, stdin);
-    l->autor[strcspn(l->autor, "\n")] = 0;
-
-    printf("Novo gênero (atual: %d): ", l->genero);
-    scanf("%d", &l->genero);
-
-    printf("Novo volume (atual: %d): ", l->volume);
-    scanf("%d", &l->volume);
-
-    printf("Nova quantidade (atual: %d): ", l->qtd);
-    scanf("%d", &l->qtd);
-
-    printf("Livro atualizado com sucesso!\n");
-}
-
-void deletar_livro(livro livros[], int *quantidade, int index) {
-    for (int i = index; i < (*quantidade) - 1; i++) {
-        livros[i] = livros[i + 1];
-    }
-    (*quantidade)--;
-    printf("Livro deletado com sucesso!\n");
-}
-
-                                                                   //FUNÇÕES PARA ALUNO (KELVYN)
-
-void abrir_arquivo_alunos () {
+void criar_arquivo_biblioteca(){
 	int i;
-	FILE *f;
-	f = fopen("Alunos.txt", "w");
-	if (f == NULL) {
-		printf("Erro na abertura!\n");
+	p = fopen("Bibliotecas.txt", "w");
+	if (p == NULL){
+		printf("Nao foi possivel abrir o arquivo.");
 		exit(1);
 	}
-	for(i=0; i < total_alunos; i++) {
-		fprintf(f, "%s\n%s\n%s\n%s\n", cad[i].nome, cad[i].curso, cad[i].cpf, cad[i].senha);
+	for (i=0; i < count; i++){
+		fprintf(p, "Nome: %s\nLocal: %s\nFuncionarios: %d\nAbertura: %s\nFechamento: %s\n\n", library[i].nome, library[i].local, library[i].num_funcionarios, library[i].hora_abertura, library[i].hora_fechamento);
 	}
-    fclose(f);
+	fclose(p);
+	return;
 }
 
-void carregar_alunos () {
-	FILE *f;
-    f = fopen("Alunos.txt", "r");
-    if (f == NULL) {
-        printf("Ainda nao ha dados de alunos. Os dados serao caregados apos o primeiro cadastro.\n");
-        return;
-    }
-		while (fscanf(f, " %[^\n] %[^\n] %[^\n] %[^\n]", cad[total_alunos].nome, cad[total_alunos].curso, cad[total_alunos].cpf, cad[total_alunos].senha) == 4) {
-        total_alunos++;
-    }
-    fclose(f);
-} 
-
-void cadastro () {
-	printf("Nome do aluno: \n");
-	scanf("%[^\n]", cad[total_alunos].nome);
-	fflush(stdin);
-	printf("Curso do aluno: \n");
-	scanf("%[^\n]", cad[total_alunos].curso);
-	fflush(stdin);
-	printf("CPF do aluno (apenas numeros): \n");
-	scanf("%[^\n]", cad[total_alunos].cpf);
-	fflush(stdin);
-	printf("Digite a senha: \n");
-	scanf("%[^\n]", cad[total_alunos].senha);
-	fflush(stdin);
-	printf("Aluno cadastrado com sucesso!\n");
-	total_alunos++;
-    abrir_arquivo_alunos();
-    printf("\n");
-	continuar ();
-}
-
-void exibir_aluno () {
-	int op, j;
-	char cpf[12];
-	printf("Deseja exibir um unico aluno ou todos os alunos?\n");
-	puts("(1) Buscar aluno.");
-	printf("(2) Exibir todos.\n>");
-	scanf("%d", &op);
-	fflush(stdin);
-	
-	switch(op) {
-		
-		case (1):
-			{
-			int encontrado=0;
-			printf("Digite o CPF do aluno que deseja buscar\n");
-			scanf("%[^\n]", cpf);
-			fflush(stdin);
-			for(j=0; j < MAX; j++) {
-				if(strcasecmp(cpf, cad[j].cpf) == 0) {
-					encontrado=1;
-					puts("Aluno ja cadastrado!");
-					printf("Nome: %s\n", cad[j].nome);
-					printf("Curso: %s\n", cad[j].curso);
-					printf("CPF: %s\n", cad[j].cpf);
-					printf("Senha: %s\n", cad[j].senha);
-                    printf("\n");
-					continuar ();
-				} 
-			}
-			if (encontrado==0){
-				printf("Aluno precisa ser cadastrado!\n\n");
-				continuar ();
-			}
+void ler_arquivo(){
+	p = fopen("Bibliotecas.txt", "a+");
+	if (p == NULL){
+		printf("Nao foi possivel abrir/ler o arquivo.");
+		exit(2);
+	}
+	count = 0;
+	while(fscanf(p, "Nome: %[^\n]\nLocal: %[^\n]\nFuncionarios: %d\nAbertura: %5[^\n]\nFechamento: %5[^\n]\n", library[count].nome, library[count].local, &library[count].num_funcionarios, library[count].hora_abertura, library[count].hora_fechamento) == 5){
+		count++;
+		if (count >= MAX_LIBRARIES)
 			break;
-		}	
-		
-		case (2):
-			{
-			for(j=0; j < total_alunos; j++) {
-				printf("Aluno numero %d:\n", j+1);
-				printf("Nome: %s\n", cad[j].nome);
-				printf("Curso: %s\n", cad[j].curso);
-				printf("CPF: %s\n", cad[j].cpf);
-				printf("Senha: %s\n", cad[j].senha);
-				printf("\n");
-			}
-			continuar ();
+		fscanf(p, "\n");
+	}
+	fclose(p);
+	return;
+}
+
+void criar_biblioteca(){
+	char confirm[3];
+	ler_arquivo();
+	do{
+		printf("\nDigite o nome da biblioteca:\n> ");
+		scanf("%19[^\n]", library[count].nome);
+		fflush(stdin);
+		printf("Digite o local da biblioteca:\n> ");
+		scanf("%19[^\n]", library[count].local);
+		fflush(stdin);
+		printf("Digite o numero de funcionarios da biblioteca:\n> ");
+		scanf("%d", &library[count].num_funcionarios);
+		fflush(stdin);
+		printf("Digite o horario de abertura (ex.: 07:00):\n> ");
+		scanf("%5[^\n]", library[count].hora_abertura);
+		fflush(stdin);
+		printf("Digite o horario de fechamento (e.: 20:00):\n> ");
+		scanf("%5[^\n]", library[count].hora_fechamento);
+		fflush(stdin);
+		printf("\nBiblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
+		scanf("%3[^\n]", confirm);
+		fflush(stdin);
+		printf("\n");
+		count++;
+	} while (!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
+	criar_arquivo_biblioteca();
+	return;
+}
+
+void deletar_biblioteca() {
+	int i, j, found = 0;
+	char nome[30];
+	ler_arquivo();
+	printf("Digite o nome da biblioteca a ser excluida:\n> ");
+	scanf("%29[^\n]", nome);
+	fflush(stdin);
+	for (i = 0; i < count; i++) {
+		if (!strcmp(library[i].nome, nome)) {
+			found = 1;
 			break;
 		}
-	}	
+	}
+	if (!found) {
+		printf("\nBiblioteca '%s' nao encontrada.\n", nome);
+		return;
+	}
+	for (j = i; j < count - 1; j++) {
+		library[j] = library[j + 1];
+	}
+	count--;
+	criar_arquivo_biblioteca();
+	printf("\nBiblioteca '%s' deletada com sucesso.\n\n", nome);
+	return;
+}
+
+void mostrar_biblioteca(){
+	int i, c, found=0;
+	char nomep[30], confirm[3];
+	ler_arquivo();
+	printf("\n(1) - Pesquisar uma biblioteca\n(2) - Mostrar lista completa\n(3) - Cancelar\n\n> ");
+	scanf("%d", &c);
+	fflush(stdin);
+	if (c == 1){
+		do{
+			printf("\nDigite o nome da biblioteca:\n> ");
+			scanf("%29[^\n]", nomep);
+			fflush(stdin);
+			for (i=0; i < count; i++){
+				if (!strcmp(library[i].nome, nomep)){
+					found=1;
+					printf("\n\tBiblioteca encontrada!\n\n");
+					printf("Nome: %s\n", library[i].nome);
+					printf("Local: %s\n", library[i].local);
+					printf("Funcionarios: %d\n", library[i].num_funcionarios);
+					printf("Horario de abertura: %s\n", library[i].hora_abertura);
+					printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
+				}
+			}
+			if (!found)
+				printf("\n\tBiblioteca nao econtrada!\n\n");
+			printf("Deseja repetir a busca? (sim/nao)\n> ");
+			scanf("%3[^\n]", confirm);
+			fflush(stdin);
+		} while(!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
+	} else if (c==2) {
+		for (i=0; i < count; i++){
+			printf("\n\t#Biblioteca %d\n\n", i+1);
+			printf("Nome: %s\n", library[i].nome);
+			printf("Local: %s\n", library[i].local);
+			printf("Numero de Funcionarios: %d\n", library[i].num_funcionarios);
+			printf("Horario de abertura: %s\n", library[i].hora_abertura);
+			printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
+		}
+	} else {
+		return;
+	}
+	return;
+}
+
+void update_biblioteca(){
+	char nomep[30], confirm[3];
+	int i, op, found=0;
+	ler_arquivo();
+	printf("\nDigite o nome da biblioteca a ser alterada:\n> ");
+	scanf("%29[^\n]", nomep);
+	fflush(stdin);
+	for (i = 0; i < count; i++){
+		if (!strcmp(library[i].nome, nomep)){
+			found = 1;
+			printf("\n\tBiblioteca encontrada!\n\n");
+			printf("Nome: %s\n", library[i].nome);
+			printf("Local: %s\n", library[i].local);
+			printf("Funcionarios: %d\n", library[i].num_funcionarios);
+			printf("Horario de abertura: %s\n", library[i].hora_abertura);
+			printf("Horario de fechamento: %s\n\n", library[i].hora_fechamento);
+			break;
+		}
+	}
+	if (!found){
+		printf("\n\tBiblioteca nao encontrada!\n\n");
+		return;
+	}
+	printf("Selecione o que deseja alterar:\n\n");
+	printf("(1) - Nome\n");
+	printf("(2) - Local\n");
+	printf("(3) - Numero de Funcionarios\n");
+	printf("(4) - Horario de Abertura\n");
+	printf("(5) - Horario de Fechamento\n");
+	printf("(6) - Cancelar\n\n> ");
+	scanf("%d", &op);
+	fflush(stdin);
+	switch(op){
+		case 1:
+			printf("Digite o novo nome:\n> ");
+			scanf("%29[^\n]", library[i].nome);
+			fflush(stdin);
+			break;
+		case 2:
+			printf("Digite o novo local:\n> ");
+			scanf("%29[^\n]", library[i].local);
+			fflush(stdin);
+			break;
+		case 3:
+			printf("Digite o novo numero de funcionarios:\n> ");
+			scanf("%d", &library[i].num_funcionarios);
+			fflush(stdin);
+			break;
+		case 4:
+			printf("Digite o novo horario de abertura (ex.: 08:00):\n> ");
+			scanf("%29[^\n]", library[i].hora_abertura);
+			fflush(stdin);
+			break;
+		case 5:
+			printf("Digite o novo horario de fechamento (ex.: 22:00):\n> ");
+			scanf("%29[^\n]", library[i].hora_fechamento);
+			fflush(stdin);
+			break;
+		default:
+			return;
+	}
+	printf("\nAlterado com sucesso!\n\n");
+	criar_arquivo_biblioteca();
+}
+
+void menu_bibliotecas(){
+	int op;
+	do{
+		printf("- - - - - [Menu Bibliotecas] - - - - -\n\n");
+		printf("(1) - Criar biblioteca\n");
+		printf("(2) - Pesquisar/listar bibliotecas\n");
+		printf("(3) - Deletar biblioteca\n");
+		printf("(4) - Atualizar biblioteca\n");
+		printf("(5) - Sair\n\n> ");
+		scanf("%d", &op);
+		fflush(stdin);
+		switch(op){
+			case 1:
+				criar_biblioteca();
+				break;
+			case 2: 
+				mostrar_biblioteca();
+				break;
+			case 3:
+				deletar_biblioteca();
+				break;
+			case 4:
+				update_biblioteca();
+				break;
+			default:
+				break;
+		}
+	} while (op < 5 && op > 0);
+	return 0;
 }
