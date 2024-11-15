@@ -39,40 +39,51 @@ void ler_arquivo(){
 	return;
 }
 
-void criar_biblioteca(){
-	char confirm[3];
-	ler_arquivo();
-	do{
-		printf("\nDigite o nome da biblioteca:\n> ");
-		scanf("%19[^\n]", library[count].nome);
-		fflush(stdin);
-		printf("Digite o local da biblioteca:\n> ");
-		scanf("%19[^\n]", library[count].local);
-		fflush(stdin);
-		printf("Digite o numero de funcionarios da biblioteca:\n> ");
-		scanf("%d", &library[count].num_funcionarios);
-		fflush(stdin);
-		printf("Digite o horario de abertura (ex.: 07:00):\n> ");
-		scanf("%5[^\n]", library[count].hora_abertura);
-		fflush(stdin);
-		printf("Digite o horario de fechamento (e.: 20:00):\n> ");
-		scanf("%5[^\n]", library[count].hora_fechamento);
-		fflush(stdin);
-		printf("\nBiblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
-		scanf("%3[^\n]", confirm);
-		fflush(stdin);
-		printf("\n");
-		count++;
-	} while (!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
-	criar_arquivo_biblioteca();
-	return;
+void criar_biblioteca() {
+    char confirm[3], nome_temp[20];
+    int i;
+    do {
+        if (count >= MAX_LIBRARIES) {
+            printf("\nNumero maximo de bibliotecas atingido! (count >= MAX_LIBRARIES)\n");
+            return;
+        }
+        ler_arquivo();
+        printf("\nDigite o nome da biblioteca:\n> ");
+        scanf("%19[^\n]", nome_temp);
+        fflush(stdin);
+        for (i = 0; i < count; i++) {
+            if (!strcmp(library[i].nome, nome_temp)) {
+                printf("\nErro: ja existe uma biblioteca chamada '%s'\n\n", nome_temp);
+                return;
+            }
+        }
+        strcpy(library[count].nome, nome_temp);
+        printf("Digite o local da biblioteca:\n> ");
+        scanf("%19[^\n]", library[count].local);
+        fflush(stdin);
+        printf("Digite o numero de funcionarios da biblioteca:\n> ");
+        scanf("%d", &library[count].num_funcionarios);
+        fflush(stdin);
+        printf("Digite o horario de abertura (ex.: 07:00):\n> ");
+        scanf("%5[^\n]", library[count].hora_abertura);
+        fflush(stdin);
+        printf("Digite o horario de fechamento (ex.: 20:00):\n> ");
+        scanf("%5[^\n]", library[count].hora_fechamento);
+        fflush(stdin);
+        count++;
+        criar_arquivo_biblioteca();
+        printf("\nBiblioteca cadastrada! Deseja continuar cadastrando? (sim/nao)\n> ");
+        scanf("%3[^\n]", confirm);
+        fflush(stdin);
+        printf("\n");
+    } while (!strcasecmp(confirm, "sim") || !strcasecmp(confirm, "s"));
 }
 
 void deletar_biblioteca() {
 	int i, j, found = 0;
 	char nome[30];
 	ler_arquivo();
-	printf("Digite o nome da biblioteca a ser excluida:\n> ");
+	printf("\nDigite o nome da biblioteca a ser excluida:\n> ");
 	scanf("%29[^\n]", nome);
 	fflush(stdin);
 	for (i = 0; i < count; i++) {
@@ -226,6 +237,9 @@ void menu_bibliotecas(){
 				break;
 			case 4:
 				update_biblioteca();
+				break;
+			case 5:
+				printf("\n");
 				break;
 			default:
 				break;
