@@ -16,22 +16,25 @@ void abrir_arquivo() {
         exit(1);
     }
     for ( i = 0; i < quantidade_computador; i++) {
-    	//tirei a parte que nÃ£o mostrava a situaÃ§Ã£o == 3;
+    	//tirei a parte que nao mostrava a situacao == 3;
             fprintf(f, "Computador.id:%d Computador.situacao:%d\n", computador[i].id, computador[i].situacao);
     }
     fclose(f);
 }
 
-
 void carregar_arquivo() {
-    f = fopen("Computadores.txt", "r");
+    FILE *f = fopen("Computadores.txt", "r");
     if (f == NULL) {
-        printf("Ainda nao ha dados de computadores.\n");
+        printf("Ainda nao ha dados de computadores. O arquivo sera criado quando salvar novos dados.\n");
         return;
     }
-    while (fscanf(f, "%d %d", &computador[quantidade_computador].id, &computador[quantidade_computador].situacao) == 2) {
+
+    while (fscanf(f, "Computador.id:%d Computador.situacao:%d", 
+                  &computador[quantidade_computador].id, 
+                  &computador[quantidade_computador].situacao) == 2) {
         quantidade_computador++;
     }
+
     fclose(f);
 }
 
@@ -186,20 +189,21 @@ void renovar_computador() {
 void menu_computadores(){
 	int op;
 	
-	abrir_arquivo();
+	carregar_arquivo();
 	
 	
 	do{
 		printf("\n- - - - - [Menu Computadores] - - - - -\n\n");
-		puts("Digite a opção desejada:");
+		puts("Digite a opcao desejada:\n");
 		
-		puts("Adicionar computador(1)");
-		puts("Remover computador(2)");
-		puts("Listar computador(3)");
-		puts("Alugar computador(4)");
-		puts("Devolver computador(5)");
-		puts("Renovar computador(6)");
-		
+		puts("(1) - Adicionar computador");
+		puts("(2) - Remover computador");
+		puts("(3) - Listar computador");
+		puts("(4) - Alugar computador");
+		puts("(5) - Devolver computador");
+		puts("(6) - Renovar computador");
+		puts("(7) - Sair");
+		printf("\n> ");
 		
 		scanf("%d", &op);
 		fflush(stdin);
@@ -228,9 +232,12 @@ void menu_computadores(){
 			case 6:
 				renovar_computador();
 				break;
+			case 7:
+				puts("\nSaindo...\n");
+				break;
 			default:
 				puts("\nPor favor digite um valor valido\n");
 		}
 		
-	}while(1);
+	}while(op != 7);
 }
