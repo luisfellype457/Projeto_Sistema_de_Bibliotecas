@@ -11,5 +11,5 @@ Dessa forma, as funções para a biblioteca são criadas separadamente para que 
 - Alec Moreira
 - Henrique Cintra
 - Kelvyn Cesar
-- Luís Fellype
+- Luís Fellype (Líder designado pelo grupo)
 - Emmanuel Vitor
